@@ -47,7 +47,21 @@ const User= mongoose.model('User',userSchema)
 
 
 app.post('/login',(req,res)=>{
-res.send("First One")
+    const {email,password}=req.body
+    User.findOne({email:email}, (err,user)=>{
+        if(user){
+            if (password===user.password)
+            {
+                res.send({message:"Login Successful",user:user})
+            }
+            else{
+                res.send({message:"Password did not match"})
+            }
+        }
+        else{
+            res.send({message: "User is not registered"})
+        }
+    }) 
 })
 
 app.post('/register',(req,res)=>{
